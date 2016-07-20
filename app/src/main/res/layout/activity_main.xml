@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Upload Photo" />
+
+    <Button
+        android:id="@+id/loadimage"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Take Picture"
+        android:onClick="takePicture"/>
+
+    <TextView
+        android:id="@+id/targeturi"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/targetimage"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="20dip"/>
+
+</LinearLayout>
