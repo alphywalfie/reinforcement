@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="project.alphywalfie.lab1.RegisterScreen">
+    tools:context="com.example.logan.cameraparsedemo2016.RegistrationActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -66,9 +66,10 @@
         android:layout_height="wrap_content"
         android:text="OK"
         android:id="@+id/button2"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:onClick="registerUser"/>
+        android:onClick="registerUser"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -78,4 +79,21 @@
         android:layout_alignBottom="@+id/button2"
         android:layout_centerHorizontal="true"
         android:onClick="cancelMethod"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:layout_below="@+id/password"
+        android:layout_alignParentStart="true"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Take Picture"
+        android:id="@+id/button4"
+        android:layout_below="@+id/imageView2"
+        android:layout_alignParentStart="true"
+        android:onClick="takePicture"/>
 </RelativeLayout>

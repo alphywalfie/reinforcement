@@ -10,6 +10,16 @@ public class User extends RealmObject {
     private String username;
     private String password;
 
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    private String filename;
+
     public String getUsername() {
         return username;
     }
