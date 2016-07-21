@@ -40,4 +40,10 @@ public class UserList extends AppCompatActivity {
         //put extras = all the thing
         //probably get all the reviews as well
     }
+
+    public void goHome(View v)
+    {
+        Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.ListActivity.class);
+        startActivity(intent);
+    }
 }

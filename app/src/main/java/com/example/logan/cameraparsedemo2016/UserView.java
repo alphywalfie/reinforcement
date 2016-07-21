@@ -33,6 +33,7 @@ public class UserView extends AppCompatActivity {
 
         Intent intent = getIntent();
         String user = intent.getStringExtra("username");
+        setTitle(user);
         String about = intent.getStringExtra("about");
         String disappoint = intent.getStringExtra("disappoints");
         SharedPreferences prefs = getSharedPreferences("remember_me", MODE_PRIVATE);

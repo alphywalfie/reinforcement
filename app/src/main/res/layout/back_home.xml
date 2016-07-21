@@ -8,5 +8,6 @@
         android:layout_height="wrap_content"
         android:text="Back to Wall of Shame"
         android:id="@+id/button5"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:onClick="goHome"/>
 </LinearLayout>
