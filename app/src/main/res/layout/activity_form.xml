@@ -19,7 +19,7 @@
     <ImageView
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:id="@+id/formFoodPic"
+        android:id="@+id/formPic"
         android:src="@drawable/camera"
         android:layout_gravity="center_horizontal"
         android:onClick="takePicture"/>
@@ -38,79 +38,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Name:"
+        android:text="Title:"
         android:id="@+id/textView"
          />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/nameText"
-        android:text=""
-        />
+        android:id="@+id/titleText" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Price:"
-        android:id="@+id/textView2"
-        />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:ems="10"
-        android:id="@+id/priceText"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Description:"
+        android:text="Caption:"
         android:id="@+id/textView3"
         />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/descriptionText"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Comments:"
-        android:id="@+id/textView4"
-         />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/commentText"
-         />
-
-    <Gallery
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/gallery"
-         />
-
-    <RatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ratingBar"
+        android:id="@+id/captionText"
         />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="OK"
-        android:id="@+id/okReview"
-        android:onClick="submitReview"
+        android:id="@+id/ok"
+        android:onClick="submitDisappointment"
          />
 
     <Button

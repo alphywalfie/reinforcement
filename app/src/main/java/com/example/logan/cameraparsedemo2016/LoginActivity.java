@@ -65,20 +65,21 @@ public class LoginActivity extends AppCompatActivity {
         RealmQuery<User> query = realm.where(User.class);
         query.equalTo("username", loginUsername);
         query.equalTo("password", loginPassword);
-        RealmResults<User> result1 = query.findAll();
+        User result1 = query.findFirst();
 
         //fix this logic check
-        if(!result1.isEmpty())
+        if(!(result1 == null))
         {
+            SharedPreferences prefs = getSharedPreferences("remember_me", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
             if (checky)
             {
-                SharedPreferences prefs = getSharedPreferences("remember_me", MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("username",loginUsername);
                 editor.putString("password",loginPassword);
                 editor.putBoolean("remember", checky);
-                editor.commit();
             }
+            editor.putString("userId", result1.getId());
+            editor.commit();
             Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.ListActivity.class);
             startActivity(intent);
         }

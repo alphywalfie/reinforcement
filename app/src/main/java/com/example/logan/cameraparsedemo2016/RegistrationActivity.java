@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.UUID;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -59,6 +60,7 @@ public class RegistrationActivity extends AppCompatActivity {
             User user = new User();
             user.setUsername(newUsername);
             user.setPassword(newPassword);
+            user.setId(UUID.randomUUID().toString());
             if (outputFile != null)
             {
                 user.setFilename(outputFile.getAbsolutePath());

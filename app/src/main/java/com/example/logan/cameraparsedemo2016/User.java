@@ -7,8 +7,36 @@ import io.realm.RealmObject;
  */
 public class User extends RealmObject {
 
+    private String id;
     private String username;
     private String password;
+    private String filename;
+    private String aboutMe;
+    //private String[] whatDisappoints;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
+    }
+
+//    public String[] getWhatDisappoints() {
+//        return whatDisappoints;
+//    }
+//
+//    public void setWhatDisappoints(String[] whatDisappoints) {
+//        this.whatDisappoints = whatDisappoints;
+//    }
 
     public String getFilename() {
         return filename;
@@ -17,8 +45,6 @@ public class User extends RealmObject {
     public void setFilename(String filename) {
         this.filename = filename;
     }
-
-    private String filename;
 
     public String getUsername() {
         return username;

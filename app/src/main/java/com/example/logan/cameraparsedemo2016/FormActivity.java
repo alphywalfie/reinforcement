@@ -3,6 +3,7 @@ package com.example.logan.cameraparsedemo2016;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -21,88 +22,66 @@ import java.io.File;
 public class FormActivity extends AppCompatActivity {
 
     Boolean forEdit;
+    String user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
-        setTitle("Add Review");
+        setTitle("Add Disappointment");
 
         Intent intent = getIntent();
         forEdit = intent.getBooleanExtra("forEdit", false);
+        SharedPreferences prefs = getSharedPreferences("remember_me", MODE_PRIVATE);
+        user = prefs.getString("userId", null);
+
         if (forEdit)
         {
-            setTitle("Edit Review");
-            String name = intent.getStringExtra("name");
-            float price = intent.getFloatExtra("price", 0);
-            String comment = intent.getStringExtra("comment");
-            String description = intent.getStringExtra("description");
-            float rating = intent.getFloatExtra("rating",0);
+            setTitle("Edit Disappointment");
+            String title = intent.getStringExtra("title");
+            String caption = intent.getStringExtra("caption");
             String photo = intent.getStringExtra("photo");
-            EditText et = (EditText) findViewById(R.id.nameText);
-            et.setText(name);
-            et = (EditText) findViewById(R.id.priceText);
-            et.setText(String.valueOf(price));
-            et = (EditText) findViewById(R.id.commentText);
-            et.setText(comment);
-            et = (EditText) findViewById(R.id.descriptionText);
-            et.setText(description);
-            RatingBar rb = (RatingBar) findViewById(R.id.ratingBar);
-            rb.setRating(rating);
+            EditText et = (EditText) findViewById(R.id.titleText);
+            et.setText(title);
+            et = (EditText) findViewById(R.id.captionText);
+            et.setText(caption);
             if(!photo.isEmpty())
             {
-                File foodImage;
-                foodImage = new File(photo);
-                ImageView imageView = (ImageView) findViewById(R.id.formFoodPic);
-                Picasso.with(this).load(foodImage).fit().into(imageView);
+                File disappointmentImage;
+                disappointmentImage = new File(photo);
+                ImageView imageView = (ImageView) findViewById(R.id.formPic);
+                Picasso.with(this).load(disappointmentImage).fit().into(imageView);
             }
         }
 
     }
 
-    public void submitReview(View v)
+    public void submitDisappointment(View v)
     {
-        String name;
-        float price = 0;
-        String comment;
-        String description;
-        float rating = 0;
+        String title;
+        String caption;
         String temp;
         String temp2;
 
-        EditText et = (EditText) findViewById(R.id.nameText);
-        name = et.getText().toString();
-        et = (EditText) findViewById(R.id.priceText);
-        temp = et.getText().toString();
-        if(!temp.isEmpty()) {
-            price = Float.valueOf(et.getText().toString());
-        }
-        et = (EditText) findViewById(R.id.commentText);
-        comment = et.getText().toString();
-        et = (EditText) findViewById(R.id.descriptionText);
-        description = et.getText().toString();
-        RatingBar rb = (RatingBar) findViewById(R.id.ratingBar);
-        temp2 = et.getText().toString();
-        if(!temp2.isEmpty()) {
-            rating = rb.getRating();
-        }
+        EditText et = (EditText) findViewById(R.id.titleText);
+        title = et.getText().toString();
+        et = (EditText) findViewById(R.id.captionText);
+        caption = et.getText().toString();
 
-        if(name.isEmpty() || temp.isEmpty() || comment.isEmpty()|| description.isEmpty() || temp2.isEmpty())
+        if(title.isEmpty() || caption.isEmpty())
         {
             Toast toast = Toast.makeText(this, "Make sure no field is blank", Toast.LENGTH_SHORT);
             toast.show();
         }
         else {
-            final Intent reviewIntent = new Intent();
-            reviewIntent.putExtra("name", name);
-            reviewIntent.putExtra("price", price);
-            reviewIntent.putExtra("comment", comment);
-            reviewIntent.putExtra("description", description);
-            reviewIntent.putExtra("rating", rating);
+            final Intent disappointmentIntent = new Intent();
+            disappointmentIntent.putExtra("title", title);
+            disappointmentIntent.putExtra("caption", caption);
+            disappointmentIntent.putExtra("user", user);
             if (newPhotoTaken) {
-                reviewIntent.putExtra("photoPath", outputFile.getAbsolutePath());
+                disappointmentIntent.putExtra("photoPath", outputFile.getAbsolutePath());
             }
             if (!forEdit) {
-                setResult(1, reviewIntent);
+                setResult(1, disappointmentIntent);
                 finish();
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -110,7 +89,7 @@ public class FormActivity extends AppCompatActivity {
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                setResult(2, reviewIntent);
+                                setResult(2, disappointmentIntent);
                                 finish();
                             }
                         })
@@ -220,7 +199,7 @@ public class FormActivity extends AppCompatActivity {
     private void updateImageView()
     {
         // place ImageView with Picasso
-        ImageView imageView = (ImageView) findViewById(R.id.formFoodPic);
+        ImageView imageView = (ImageView) findViewById(R.id.formPic);
         Picasso.with(this).load(outputFile).fit().into(imageView);
         newPhotoTaken = true;
     }
