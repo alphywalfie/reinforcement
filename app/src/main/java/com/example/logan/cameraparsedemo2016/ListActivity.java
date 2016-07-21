@@ -129,8 +129,12 @@ public class ListActivity extends AppCompatActivity {
             intent.putExtra("title", d.getTitle());
             intent.putExtra("user", d.getUser());
             intent.putExtra("caption", d.getCaption());
-            intent.putExtra("latitude", d.getLatitude());
-            intent.putExtra("longitude", d.getLongitude());
+            if(d.getLongitude() != null)
+            {
+                intent.putExtra("longitude", d.getLongitude());
+                intent.putExtra("latitude", d.getLatitude());
+                intent.putExtra("locationPresent", true);
+            }
 //        intent.putExtra("year", d.getYear());
 //        intent.putExtra("month", d.getMonth());
 //        intent.putExtra("date", d.getDate());

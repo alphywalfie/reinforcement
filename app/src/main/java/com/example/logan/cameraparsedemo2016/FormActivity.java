@@ -267,6 +267,7 @@ public class FormActivity extends FragmentActivity implements OnMapReadyCallback
                         .position(pos);
 
                 markerOptions.title(comment);
+                mMap.clear();
 
                 // based on local profile
                 //markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.green_pin));
