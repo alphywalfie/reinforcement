@@ -99,6 +99,12 @@ public class ListActivity extends AppCompatActivity {
         alert.show();
     }
 
+    public void viewUsers(View v)
+    {
+        Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.UserList.class);
+        startActivity(intent);
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         if (data != null)

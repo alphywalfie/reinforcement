@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -59,7 +58,7 @@ public class RealmDisappointmentAdapter extends RealmBaseAdapter<Disappointment>
 
             TextView name = (TextView) v.findViewById(R.id.titleText);
             TextView user = (TextView) v.findViewById(R.id.userText);
-            ImageView imageView = (ImageView) v.findViewById(R.id.imageView3);
+            ImageView imageView = (ImageView) v.findViewById(R.id.userProfilePhoto);
 
             Disappointment d = adapterData.get(position);
             name.setText(d.getTitle());

@@ -22,7 +22,7 @@
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:id="@+id/imageView3"
+                android:id="@+id/userProfilePhoto"
                 android:src="@drawable/camera"
                 android:layout_gravity="center_horizontal" />
 
@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Large Text"
-                android:id="@+id/textView5"
+                android:id="@+id/userProfileLabel"
                 android:layout_gravity="center_horizontal" />
 
             <TextView
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Medium Text"
-                android:id="@+id/textView11" />
+                android:id="@+id/userAboutLabel" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Medium Text"
-                android:id="@+id/textView13" />
+                android:id="@+id/userDisappointLabel" />
 
             <TextView
                 android:layout_width="wrap_content"

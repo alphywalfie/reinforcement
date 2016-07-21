@@ -1,5 +1,6 @@
 package com.example.logan.cameraparsedemo2016;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +27,15 @@ public class UserList extends AppCompatActivity {
     public void viewUser(View v)
     {
         User u = (User) v.getTag();
+        Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.UserView.class);
+        intent.putExtra("username", u.getUsername());
+        intent.putExtra("about", u.getAboutMe());
+        intent.putExtra("disappoints", u.getWhatDisappoints());
+        if(u.getProfile() != null)
+        {
+            intent.putExtra("profile", u.getProfile());
+        }
+        startActivity(intent);
         //launch intent for the view activity
         //put extras = all the thing
         //probably get all the reviews as well

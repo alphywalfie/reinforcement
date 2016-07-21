@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("password",loginPassword);
                 editor.putBoolean("remember", checky);
             }
-            editor.putString("userId", result1.getId());
+            //editor.putString("userId", result1.getId());
             editor.commit();
             Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.ListActivity.class);
             startActivity(intent);
