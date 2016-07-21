@@ -1,6 +1,5 @@
 package com.example.logan.cameraparsedemo2016;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -22,15 +21,15 @@ import io.realm.Realm;
 import io.realm.RealmBaseAdapter;
 
 /**
- * Created by lance on 21/07/2016.
+ * Created by lance on 22/07/2016.
  */
-public class RealmDisappointmentAdapter extends RealmBaseAdapter<Disappointment> implements ListAdapter {
+public class RealmHallOfShameAdapter extends RealmBaseAdapter<Disappointment> implements ListAdapter {
     private ArrayList<Disappointment> disappointments;
     private File disappointmentImage;
     Realm realm = Realm.getDefaultInstance();
     SharedPreferences prefs = context.getSharedPreferences("remember_me", context.MODE_PRIVATE);
 
-    public RealmDisappointmentAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<Disappointment> data) {
+    public RealmHallOfShameAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<Disappointment> data) {
         super(context, data);
     }
 
@@ -55,31 +54,28 @@ public class RealmDisappointmentAdapter extends RealmBaseAdapter<Disappointment>
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (position<adapterData.size()) {
-            View v = inflater.inflate(R.layout.disappointment_row, null);
+            View v = inflater.inflate(R.layout.shame_row, null);
 
             TextView name = (TextView) v.findViewById(R.id.titleText);
             TextView user = (TextView) v.findViewById(R.id.userText);
+            TextView number = (TextView) v.findViewById(R.id.numberText);
             ImageView imageView = (ImageView) v.findViewById(R.id.userProfilePhoto);
 
+            number.setText(position);
             Disappointment d = adapterData.get(position);
             name.setText(d.getTitle());
-            user.setText(d.getUser());
+            User results1 = realm.where(User.class)
+                    .equalTo("id", d.getUser())
+                    .findFirst();
+            user.setText(results1.getUsername());
             if (d.getFilename() != null)
             {
                 disappointmentImage = new File(d.getFilename());
                 Picasso.with(context).load(disappointmentImage).fit().into(imageView);
             }
-            Button db = (Button) v.findViewById(R.id.deleteButton);
-            Button eb = (Button) v.findViewById(R.id.editButton);
             Button vb = (Button) v.findViewById(R.id.viewButton);
-            db.setTag(d);
-            eb.setTag(d);
+            String currentUser = prefs.getString("userId", "");
             vb.setTag(d);
-            if (!d.getUser().equals(prefs.getString("username","")))
-            {
-                db.setVisibility(View.INVISIBLE);
-                eb.setVisibility(View.INVISIBLE);
-            }
             return v;
         }
         else

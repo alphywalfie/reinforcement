@@ -17,6 +17,7 @@ public class Disappointment extends RealmObject {
     private int year;
     private int month;
     private int date;
+    private int likes;
 
     public String getId() {
         return id;

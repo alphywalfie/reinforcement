@@ -24,26 +24,26 @@ public class DisappointmentView extends AppCompatActivity {
 
     Realm realm = Realm.getDefaultInstance();
     Disappointment disappointmentToEdit;
-    Intent intent = getIntent();
+
     private RealmDisappointmentAdapter adapter;
-    SharedPreferences prefs = getSharedPreferences("disappointment", MODE_PRIVATE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disappointment_view);
 
-        TextView tv = (TextView) findViewById(R.id.titleText);
-        tv.setText(prefs.getString("title", ""));
+        Intent intent2 = getIntent();
+        TextView tv = (TextView) findViewById(R.id.titleText2);
+        tv.setText(intent2.getStringExtra("title"));
 
-        tv = (TextView) findViewById(R.id.userText);
-        User results1 = realm.where(User.class)
-                .equalTo("id", prefs.getString("user", ""))
-                .findFirst();
-        tv.setText(results1.getUsername());
+//        tv = (TextView) findViewById(R.id.userText);
+//        User results1 = realm.where(User.class)
+//                .equalTo("id", intent2.getStringExtra("user"))
+//                .findFirst();
+//        tv.setText(results1.getUsername());
 
         tv = (TextView) findViewById(R.id.captionText);
-        tv.setText(prefs.getString("caption", ""));
+        tv.setText(intent2.getStringExtra("caption"));
 
 //        tv = (TextView) findViewById(R.id.locationText);
 //        tv.setText(intent.getStringExtra("location"));
@@ -51,18 +51,19 @@ public class DisappointmentView extends AppCompatActivity {
 //        tv = (TextView) findViewById(R.id.dateText);
 //        tv.setText(intent.getStringExtra("month")+"/"+intent.getStringExtra("date")+"/"+intent.getStringExtra("year"));
 
-        if (!(prefs.getString("filename", "").equals("")))
+        if (!(intent2.getStringExtra("filename").equals("")))
         {
             ImageView iv = (ImageView) findViewById(R.id.disappointmentImage);
-            File disappointmentImage = new File(prefs.getString("filename", ""));
+            File disappointmentImage = new File(intent2.getStringExtra("filename"));
             Picasso.with(this).load(disappointmentImage).fit().into(iv);
         }
     }
 
     public void editDisappointment(View v)
     {
+        Intent intent2 = getIntent();
         disappointmentToEdit = realm.where(Disappointment.class)
-                .equalTo("id", prefs.getString("id", ""))
+                .equalTo("id", intent2.getStringExtra("id"))
                 .findFirst();
         Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.FormActivity.class);
         intent.putExtra("forEdit", true);
@@ -81,8 +82,9 @@ public class DisappointmentView extends AppCompatActivity {
 
     public void deleteDisappointment(View v)
     {
+        Intent intent2 = getIntent();
         final Disappointment d = realm.where(Disappointment.class)
-                .equalTo("id", prefs.getString("id", ""))
+                .equalTo("id", intent2.getStringExtra("id"))
                 .findFirst();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to delete this item?")

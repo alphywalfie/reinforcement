@@ -47,7 +47,6 @@ public class ListActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("remember_me", MODE_PRIVATE);
         Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.FormActivity.class);
         intent.putExtra("forEdit", false);
-        intent.putExtra("user", prefs.getString("userId", null));
         startActivityForResult(intent, 1);
     }
 
@@ -109,27 +108,27 @@ public class ListActivity extends AppCompatActivity {
     {
         Disappointment d = (Disappointment) v.getTag();
 
-        SharedPreferences prefs = getSharedPreferences("disappointment", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("title", d.getTitle());
-        editor.putString("user", d.getUser());
-//        editor.putString("location", d.getLocation());
-//        editor.putInt("year", d.getYear());
-//        editor.putInt("month", d.getMonth());
-//        editor.putInt("date", d.getDate());
-        if (d.getFilename() != null)
+        if (d != null)
         {
-            editor.putString("filename", d.getFilename());
+            Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.DisappointmentView.class);
+            intent.putExtra("title", d.getTitle());
+            intent.putExtra("user", d.getUser());
+            intent.putExtra("caption", d.getCaption());
+//        intent.putExtra("location", d.getLocation());
+//        intent.putExtra("year", d.getYear());
+//        intent.putExtra("month", d.getMonth());
+//        intent.putExtra("date", d.getDate());
+            if (d.getFilename() != null)
+            {
+                intent.putExtra("filename", d.getFilename());
+            }
+            else
+            {
+                intent.putExtra("filename", "");
+            }
+            intent.putExtra("id", d.getId());
+            startActivity(intent);
         }
-        else
-        {
-            editor.putString("filename", "");
-        }
-        editor.putString("id", d.getId());
-        editor.commit();
-
-        Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.DisappointmentView.class);
-        startActivity(intent);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data)

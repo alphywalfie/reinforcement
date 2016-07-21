@@ -52,7 +52,7 @@ public class FormActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = getIntent();
         forEdit = intent.getBooleanExtra("forEdit", false);
         SharedPreferences prefs = getSharedPreferences("remember_me", MODE_PRIVATE);
-        user = prefs.getString("userId", null);
+        user = prefs.getString("username", null);
 
         if (forEdit) {
             setTitle("Edit Disappointment");
