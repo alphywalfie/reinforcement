@@ -45,6 +45,7 @@ public class DisappointmentView extends AppCompatActivity implements OnMapReadyC
         Intent intent2 = getIntent();
         TextView tv = (TextView) findViewById(R.id.titleText2);
         tv.setText(intent2.getStringExtra("title"));
+        setTitle(intent2.getStringExtra("title"));
 
         tv = (TextView) findViewById(R.id.userText);
         tv.setText(intent2.getStringExtra("user"));
