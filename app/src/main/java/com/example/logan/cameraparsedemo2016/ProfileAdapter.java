@@ -76,8 +76,7 @@ public class ProfileAdapter extends RealmBaseAdapter<Disappointment> implements 
             Button eb = (Button) v.findViewById(R.id.editButton);
             db.setTag(d);
             eb.setTag(d);
-            db.setTag(d);
-            eb.setTag(d);
+            imageView.setTag(d);
             if (!d.getUser().equals(prefs.getString("username", "")))
             {
                 db.setVisibility(View.INVISIBLE);
