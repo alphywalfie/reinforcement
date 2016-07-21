@@ -61,6 +61,21 @@
         android:id="@+id/captionText"
         />
 
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="159dp"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:id="@+id/fragment"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Location"
+        android:id="@+id/button7"
+        android:layout_gravity="center_horizontal"
+        android:onClick="goToMap"/>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

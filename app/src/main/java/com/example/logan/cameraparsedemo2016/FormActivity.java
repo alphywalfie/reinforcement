@@ -4,9 +4,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,14 +17,28 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.Date;
 
 public class FormActivity extends AppCompatActivity {
 
     Boolean forEdit;
     String user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +50,7 @@ public class FormActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("remember_me", MODE_PRIVATE);
         user = prefs.getString("userId", null);
 
-        if (forEdit)
-        {
+        if (forEdit) {
             setTitle("Edit Disappointment");
             String title = intent.getStringExtra("title");
             String caption = intent.getStringExtra("caption");
@@ -44,8 +59,7 @@ public class FormActivity extends AppCompatActivity {
             et.setText(title);
             et = (EditText) findViewById(R.id.captionText);
             et.setText(caption);
-            if(!photo.isEmpty())
-            {
+            if (!photo.isEmpty()) {
                 File disappointmentImage;
                 disappointmentImage = new File(photo);
                 ImageView imageView = (ImageView) findViewById(R.id.formPic);
@@ -55,8 +69,13 @@ public class FormActivity extends AppCompatActivity {
 
     }
 
-    public void submitDisappointment(View v)
+    public void goToMap(View v)
     {
+        Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.MapsActivity.class);
+        startActivityForResult(intent, 0);
+    }
+
+    public void submitDisappointment(View v) {
         String title;
         String caption;
         String temp;
@@ -67,12 +86,10 @@ public class FormActivity extends AppCompatActivity {
         et = (EditText) findViewById(R.id.captionText);
         caption = et.getText().toString();
 
-        if(title.isEmpty() || caption.isEmpty())
-        {
+        if (title.isEmpty() || caption.isEmpty()) {
             Toast toast = Toast.makeText(this, "Make sure no field is blank", Toast.LENGTH_SHORT);
             toast.show();
-        }
-        else {
+        } else {
             final Intent disappointmentIntent = new Intent();
             disappointmentIntent.putExtra("title", title);
             disappointmentIntent.putExtra("caption", caption);
@@ -104,8 +121,7 @@ public class FormActivity extends AppCompatActivity {
         }
     }
 
-    public void cancelMethod(View v)
-    {
+    public void cancelMethod(View v) {
         finish();
     }
 
@@ -116,17 +132,16 @@ public class FormActivity extends AppCompatActivity {
     private String photoPath;
     private Boolean newPhotoTaken = false;
 
-    public void takePicture(View view)
-    {
+    public void takePicture(View view) {
 
         File sdCard = Environment.getExternalStorageDirectory();
-        File directory = new File (sdCard.getAbsolutePath() + "/CameraTest/");
+        File directory = new File(sdCard.getAbsolutePath() + "/CameraTest/");
         directory.mkdirs();
 
         // unique filename based on the time
         photoPath = String.valueOf(System.currentTimeMillis());
-        outputFile = new File(directory, photoPath+".jpg");
-        thumbNailFile = new File(directory, photoPath+"_tn.jpg");
+        outputFile = new File(directory, photoPath + ".jpg");
+        thumbNailFile = new File(directory, photoPath + "_tn.jpg");
 
         Uri outputFileUri = Uri.fromFile(outputFile);
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
@@ -138,20 +153,16 @@ public class FormActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (resultCode == RESULT_OK)
-        {
+        if (resultCode == RESULT_OK) {
             processPicture();
         }
     }
+    //--------------------------------------------------------CAMERA METHODS----------------------------------------------------------------------
 
-
-    class PictureProcessThread implements Runnable
-    {
+    class PictureProcessThread implements Runnable {
         @Override
-        public void run()
-        {
-            try
-            {
+        public void run() {
+            try {
                 // this is potentially time consuming and should be done in a thread
 
                 // rescale the picture from the full size output file which is assumed to now be
@@ -164,20 +175,16 @@ public class FormActivity extends AppCompatActivity {
                 ImageUtils.resizeSavedBitmap(outputFile.getAbsolutePath(), 640, outputFile.getAbsolutePath());
 
 
-
                 // UI updates must be done via the UI thread NOT here, this will
                 // cause the Runnable to occur in the UI thread
                 runOnUiThread(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         updateImageView();
                     }
                 });
 
-            }
-            catch(final Exception e)
-            {
+            } catch (final Exception e) {
                 e.printStackTrace();
                 runOnUiThread(new Runnable() {
                     @Override
@@ -190,14 +197,12 @@ public class FormActivity extends AppCompatActivity {
     }
 
 
-    public void processPicture()
-    {
+    public void processPicture() {
         new Thread(new PictureProcessThread()).start();
 
     }
 
-    private void updateImageView()
-    {
+    private void updateImageView() {
         // place ImageView with Picasso
         ImageView imageView = (ImageView) findViewById(R.id.formPic);
         Picasso.with(this).load(outputFile).fit().into(imageView);

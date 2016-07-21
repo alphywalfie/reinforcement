@@ -1,10 +1,12 @@
 package com.example.logan.cameraparsedemo2016;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -31,8 +33,6 @@ import io.realm.Sort;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private Realm realm;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,37 +43,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        realm = Realm.getDefaultInstance();
     }
-
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         // enables the my location button on the upper right
         mMap.setMyLocationEnabled(true);
-
         // default to normal view
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-
-        // load all previous saved points
-        /*RealmResults<Position> positions = realm.where(Position.class).findAll().sort("time", Sort.ASCENDING);
-        for (Position pos : positions)
-        {
-            addOldMarker(pos);
-        }*/
     }
 
 // GoogleClient management
@@ -139,7 +116,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // initialize the GoogleClient every time the app starts
         if (mGoogleApiClient == null)
         {
-
             buildGoogleApiClient();
             mGoogleApiClient.connect();
             System.out.println("Connecting...");
@@ -162,7 +138,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mGoogleApiClient.disconnect();
             mGoogleApiClient = null;
 
-            System.out.println("Disonnect...");
+            System.out.println("Disconnect...");
         }
 
         super.onStop();
@@ -171,8 +147,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onDestroy()
     {
         super.onDestroy();
-
-        realm.close();
     }
 
     // Map management
@@ -190,6 +164,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    LatLng userPosition;
     private void updateMyPosition(Location loc)
     {
         System.out.println("Updating my position");
@@ -198,10 +173,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
             // TODO: get the lat/lng of new position
             LatLng position = new LatLng(loc.getLatitude(), loc.getLongitude());
-
+            userPosition = position;
             // System.out.println(entry);
-
+            mMap.clear();
             addNewMarker(position);
+
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -214,19 +190,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     {
         final Date date =  new Date();
         final String comment = date.toString();
-
-
-        /*realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                Position realmPos = new Position();
-                realmPos.fromLatLng(pos);
-                realmPos.setTime(date);
-                realmPos.setComment(comment);
-                realm.copyToRealm(realmPos);
-            }
-        });*/
-
 
         // NOTE: in order to update the UI an operation must occur in the UI
         // thread, this will force the action to occur in the UI thread
@@ -247,6 +210,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+    }
+
+    public void setUserLocation(View v)
+    {
+        Intent intent = getIntent();
+        Bundle args = new Bundle();
+        args.putParcelable("userPosition", userPosition);
+        intent.putExtra("bundle", args);
+        setResult(1, intent);
+        finish();
     }
 
 
