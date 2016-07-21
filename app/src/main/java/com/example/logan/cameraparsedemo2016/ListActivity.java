@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -63,6 +66,12 @@ public class ListActivity extends AppCompatActivity {
         intent.putExtra("year", disappointmentToEdit.getYear());
         intent.putExtra("month", disappointmentToEdit.getMonth());
         intent.putExtra("date", disappointmentToEdit.getDate());
+        if(disappointmentToEdit.getLatitude() != null && disappointmentToEdit.getLongitude() != null)
+        {
+            intent.putExtra("latitude", disappointmentToEdit.getLatitude());
+            intent.putExtra("longitude", disappointmentToEdit.getLongitude());
+            intent.putExtra("locationPresent", true);
+        }
         intent.putExtra("photo","");
         if (disappointmentToEdit.getFilename() != null)
         {
@@ -122,6 +131,15 @@ public class ListActivity extends AppCompatActivity {
                 d.setId(UUID.randomUUID().toString());
                 if (data.getStringExtra("photoPath") != null) {
                     d.setFilename(data.getStringExtra("photoPath"));
+                }
+                Bundle bundle = data.getParcelableExtra("bundle");
+                if (bundle != null)
+                {
+                    LatLng userPosition = bundle.getParcelable("userPosition");
+                    Double userPositionLat = userPosition.latitude;
+                    Double userPositionLong = userPosition.longitude;
+                    d.setLatitude(userPositionLat);
+                    d.setLongitude(userPositionLong);
                 }
                 realm.beginTransaction();
                 realm.copyToRealm(d);

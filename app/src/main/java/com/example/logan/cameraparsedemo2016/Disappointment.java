@@ -1,5 +1,7 @@
 package com.example.logan.cameraparsedemo2016;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.sql.Time;
 import java.util.Date;
 
@@ -14,6 +16,8 @@ public class Disappointment extends RealmObject {
     private String user;
     private String filename;
     private String caption;
+    private Double latitude;
+    private Double longitude;
     private int year;
     private int month;
     private int date;
@@ -80,5 +84,21 @@ public class Disappointment extends RealmObject {
 
     public void setDate(int date) {
         this.date = date;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 }

@@ -37,7 +37,12 @@ import java.util.Date;
 public class FormActivity extends FragmentActivity implements OnMapReadyCallback {
 
     Boolean forEdit;
+    LatLng userPosition;
+    Boolean locationInput = false;
     String user;
+    Double latitude;
+    Double longitude;
+    Boolean locationPresent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +64,9 @@ public class FormActivity extends FragmentActivity implements OnMapReadyCallback
             String title = intent.getStringExtra("title");
             String caption = intent.getStringExtra("caption");
             String photo = intent.getStringExtra("photo");
+            latitude = intent.getDoubleExtra("latitude", 0);
+            longitude = intent.getDoubleExtra("longitude", 0);
+            locationPresent = intent.getBooleanExtra("locationPresent", false);
             EditText et = (EditText) findViewById(R.id.titleText);
             et.setText(title);
             et = (EditText) findViewById(R.id.captionText);
@@ -100,6 +108,12 @@ public class FormActivity extends FragmentActivity implements OnMapReadyCallback
             disappointmentIntent.putExtra("user", user);
             if (newPhotoTaken) {
                 disappointmentIntent.putExtra("photoPath", outputFile.getAbsolutePath());
+            }
+            if (locationInput)
+            {
+                Bundle args = new Bundle();
+                args.putParcelable("userPosition", userPosition);
+                disappointmentIntent.putExtra("bundle", args);
             }
             if (!forEdit) {
                 setResult(1, disappointmentIntent);
@@ -162,8 +176,9 @@ public class FormActivity extends FragmentActivity implements OnMapReadyCallback
         }
         if (resultCode == 1){
             Bundle bundle = data.getParcelableExtra("bundle");
-            LatLng userPosition = bundle.getParcelable("userPosition");
+            userPosition = bundle.getParcelable("userPosition");
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition, 15));
+            locationInput = true;
             addNewMarker(userPosition);
         }
     }
@@ -227,6 +242,14 @@ public class FormActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         // default to normal view
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        if(forEdit)
+        {
+            if (locationPresent) {
+                LatLng oldLocation = new LatLng(latitude, longitude);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(oldLocation, 15));
+                addNewMarker(oldLocation);
+            }
+        }
     }
     private void addNewMarker(final LatLng pos)
     {
