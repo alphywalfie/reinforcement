@@ -123,7 +123,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         public void onConnectionSuspended(int arg0)
         {
-
         }
 
         @Override

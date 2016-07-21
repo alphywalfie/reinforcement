@@ -75,12 +75,12 @@ public class RealmDisappointmentAdapter extends RealmBaseAdapter<Disappointment>
             Button db = (Button) v.findViewById(R.id.deleteButton);
             Button eb = (Button) v.findViewById(R.id.editButton);
             String currentUser = prefs.getString("userId", "");
+            db.setTag(d);
+            eb.setTag(d);
             if (!d.getUser().equals(currentUser))
             {
                 db.setVisibility(View.INVISIBLE);
                 eb.setVisibility(View.INVISIBLE);
-                db.setTag(d);
-                eb.setTag(d);
             }
             return v;
         }
