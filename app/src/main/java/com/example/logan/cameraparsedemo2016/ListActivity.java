@@ -113,6 +113,12 @@ public class ListActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void viewHall(View v)
+    {
+        Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.HallOfShame.class);
+        startActivity(intent);
+    }
+
     public void viewDisappointment(View v)
     {
         Disappointment d = (Disappointment) v.getTag();
@@ -123,7 +129,8 @@ public class ListActivity extends AppCompatActivity {
             intent.putExtra("title", d.getTitle());
             intent.putExtra("user", d.getUser());
             intent.putExtra("caption", d.getCaption());
-//        intent.putExtra("location", d.getLocation());
+            intent.putExtra("latitude", d.getLatitude());
+            intent.putExtra("longitude", d.getLongitude());
 //        intent.putExtra("year", d.getYear());
 //        intent.putExtra("month", d.getMonth());
 //        intent.putExtra("date", d.getDate());
@@ -136,6 +143,7 @@ public class ListActivity extends AppCompatActivity {
                 intent.putExtra("filename", "");
             }
             intent.putExtra("id", d.getId());
+            intent.putExtra("number", d.getLikes());
             startActivity(intent);
         }
     }
@@ -155,6 +163,7 @@ public class ListActivity extends AppCompatActivity {
                 d.setDate(data.getIntExtra("date", 0));
                 d.setCaption(data.getStringExtra("caption"));
                 d.setId(UUID.randomUUID().toString());
+                d.setLikes(0);
                 if (data.getStringExtra("photoPath") != null) {
                     d.setFilename(data.getStringExtra("photoPath"));
                 }

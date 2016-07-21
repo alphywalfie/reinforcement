@@ -42,8 +42,8 @@ public class DisappointmentView extends AppCompatActivity {
         tv = (TextView) findViewById(R.id.captionText);
         tv.setText(intent2.getStringExtra("caption"));
 
-//        tv = (TextView) findViewById(R.id.locationText);
-//        tv.setText(intent.getStringExtra("location"));
+        tv = (TextView) findViewById(R.id.locationText);
+        tv.setText(intent2.getFloatExtra("latitude", 0)+","+intent2.getFloatExtra("longitude", 0));
 //
 //        tv = (TextView) findViewById(R.id.dateText);
 //        tv.setText(intent.getStringExtra("month")+"/"+intent.getStringExtra("date")+"/"+intent.getStringExtra("year"));
@@ -54,84 +54,22 @@ public class DisappointmentView extends AppCompatActivity {
             File disappointmentImage = new File(intent2.getStringExtra("filename"));
             Picasso.with(this).load(disappointmentImage).fit().into(iv);
         }
+
+        tv = (TextView) findViewById(R.id.unlikeText);
+        tv.setText(intent2.getIntExtra("number", 0)+"people have shamed this");
     }
 
-    public void editDisappointment(View v)
+    public void shame(View v)
     {
         Intent intent2 = getIntent();
-        disappointmentToEdit = realm.where(Disappointment.class)
+        Disappointment d = realm.where(Disappointment.class)
                 .equalTo("id", intent2.getStringExtra("id"))
                 .findFirst();
-        Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.FormActivity.class);
-        intent.putExtra("forEdit", true);
-        intent.putExtra("title", disappointmentToEdit.getTitle());
-        intent.putExtra("caption", disappointmentToEdit.getCaption());
-        intent.putExtra("year", disappointmentToEdit.getYear());
-        intent.putExtra("month", disappointmentToEdit.getMonth());
-        intent.putExtra("date", disappointmentToEdit.getDate());
-        intent.putExtra("photo","");
-        if (disappointmentToEdit.getFilename() != null)
-        {
-            intent.putExtra("photo", disappointmentToEdit.getFilename());
-        }
-        startActivityForResult(intent, 1);
-    }
+        realm.beginTransaction();
+        d.setLikes(d.getLikes()+1);
+        realm.commitTransaction();
 
-    public void deleteDisappointment(View v)
-    {
-        Intent intent2 = getIntent();
-        final Disappointment d = realm.where(Disappointment.class)
-                .equalTo("id", intent2.getStringExtra("id"))
-                .findFirst();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to delete this item?")
-                .setCancelable(false)
-                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id){
-                        realm.executeTransaction(new Realm.Transaction() {
-                            @Override
-                            public void execute(Realm realm) {
-                                d.deleteFromRealm();
-                            }
-                        });
-                        realm.commitTransaction();
-                        adapter.notifyDataSetChanged();
-                        dialog.dismiss();
-                        Intent intent = new Intent(getApplicationContext(), com.example.logan.cameraparsedemo2016.ListActivity.class);
-                        startActivity(intent);
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (data != null)
-        {
-            if (resultCode == 2)
-            {
-                realm.beginTransaction();
-                disappointmentToEdit.setTitle(data.getStringExtra("title"));
-                disappointmentToEdit.setCaption(data.getStringExtra("caption"));
-                disappointmentToEdit.setYear(data.getIntExtra("year", 0));
-                disappointmentToEdit.setMonth(data.getIntExtra("month", 0));
-                disappointmentToEdit.setDate(data.getIntExtra("date", 0));
-                if (data.getStringExtra("photoPath") != null) {
-                    disappointmentToEdit.setFilename(data.getStringExtra("photoPath"));
-                }
-                RealmQuery<Disappointment> query = realm.where(Disappointment.class);
-                query.equalTo("id", disappointmentToEdit.getId());
-                RealmResults<Disappointment> result1 = query.findAll();
-                realm.copyToRealmOrUpdate(result1);
-                realm.commitTransaction();
-                adapter.notifyDataSetChanged();
-            }
-        }
+        TextView tv = (TextView) findViewById(R.id.unlikeText);
+        tv.setText(d.getLikes()+"people have shamed this");
     }
 }

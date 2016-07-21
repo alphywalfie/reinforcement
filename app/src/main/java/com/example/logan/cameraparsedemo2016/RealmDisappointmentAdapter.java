@@ -71,7 +71,6 @@ public class RealmDisappointmentAdapter extends RealmBaseAdapter<Disappointment>
             }
             Button db = (Button) v.findViewById(R.id.deleteButton);
             Button eb = (Button) v.findViewById(R.id.editButton);
-            Button vb = (Button) v.findViewById(R.id.viewButton);
             db.setTag(d);
             eb.setTag(d);
             imageView.setTag(d);

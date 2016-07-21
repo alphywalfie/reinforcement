@@ -32,8 +32,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/titleText2"
-        android:layout_above="@+id/captionText"
-        android:layout_alignStart="@+id/captionText" />
+        android:layout_above="@+id/textView11"
+        android:layout_toEndOf="@+id/textView11" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -50,52 +50,17 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/captionText"
-        android:layout_above="@+id/textView13"
-        android:layout_toEndOf="@+id/textView13" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Location: "
-        android:id="@+id/textView13"
-        android:layout_below="@+id/textView11"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/locationText"
-        android:layout_below="@+id/captionText"
-        android:layout_toEndOf="@+id/textView13" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Date: "
-        android:id="@+id/textView17"
-        android:layout_below="@+id/textView13"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/dateText"
-        android:layout_below="@+id/locationText"
-        android:layout_toEndOf="@+id/textView13" />
+        android:layout_below="@+id/titleText2"
+        android:layout_toEndOf="@+id/textView11" />
 
     <ImageView
         android:layout_width="40dip"
         android:layout_height="40dip"
         android:id="@+id/unlikeImage"
-        android:layout_below="@+id/textView17"
         android:layout_alignParentStart="true"
-        android:src="@drawable/unlike"/>
+        android:src="@drawable/unlike"
+        android:onClick="shame"
+        android:layout_below="@+id/textView11" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -106,21 +71,22 @@
         android:layout_alignBottom="@+id/unlikeImage"
         android:layout_toEndOf="@+id/unlikeImage" />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit"
-        android:id="@+id/editButton"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:onClick="editDisappointment"/>
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="User: "
+        android:id="@+id/textView6"
+        android:layout_below="@+id/unlikeText"
+        android:layout_alignParentStart="true" />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete"
-        android:id="@+id/deleteButton"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="deleteDisappointment"/>
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/userText"
+        android:layout_below="@+id/unlikeText"
+        android:layout_toEndOf="@+id/textView11" />
+
 </RelativeLayout>

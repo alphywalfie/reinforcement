@@ -17,7 +17,8 @@
         android:id="@+id/disappointmentImage"
         android:src="@drawable/camera"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/numberText" />
+        android:layout_toEndOf="@+id/numberText"
+        android:onClick="viewDisappointment"/>
 
     <TextView
         android:layout_width="wrap_content"

@@ -104,4 +104,12 @@ public class Disappointment extends RealmObject {
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
 }

@@ -1,8 +1,10 @@
 package com.example.logan.cameraparsedemo2016;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -31,5 +33,40 @@ public class HallOfShame extends AppCompatActivity {
         ListView lv = (ListView) findViewById(R.id.listView3);
         adapter = new RealmHallOfShameAdapter(this, result);
         lv.setAdapter(adapter);
+    }
+
+    public void viewDisappointment(View v)
+    {
+        Disappointment d = (Disappointment) v.getTag();
+
+        if (d != null)
+        {
+            Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.DisappointmentView.class);
+            intent.putExtra("title", d.getTitle());
+            intent.putExtra("user", d.getUser());
+            intent.putExtra("caption", d.getCaption());
+            intent.putExtra("latitude", d.getLatitude());
+            intent.putExtra("longitude", d.getLongitude());
+//        intent.putExtra("year", d.getYear());
+//        intent.putExtra("month", d.getMonth());
+//        intent.putExtra("date", d.getDate());
+            if (d.getFilename() != null)
+            {
+                intent.putExtra("filename", d.getFilename());
+            }
+            else
+            {
+                intent.putExtra("filename", "");
+            }
+            intent.putExtra("id", d.getId());
+            intent.putExtra("number", d.getLikes());
+            startActivity(intent);
+        }
+    }
+
+    public void home (View v)
+    {
+        Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.ListActivity.class);
+        startActivity(intent);
     }
 }

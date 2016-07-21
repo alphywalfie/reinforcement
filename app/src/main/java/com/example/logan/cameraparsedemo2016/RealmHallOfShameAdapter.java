@@ -82,8 +82,6 @@ public class RealmHallOfShameAdapter extends RealmBaseAdapter<Disappointment> im
                 disappointmentImage = new File(d.getFilename());
                 Picasso.with(context).load(disappointmentImage).fit().into(imageView);
             }
-            Button vb = (Button) v.findViewById(R.id.viewButton);
-            String currentUser = prefs.getString("userId", "");
             imageView.setTag(d);
             return v;
         }
