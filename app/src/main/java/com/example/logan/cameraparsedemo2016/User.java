@@ -9,8 +9,35 @@ public class User extends RealmObject {
 
     private String username;
     private String password;
+    private String profile;
+    private String aboutMe;
+    private String whatDisappoints;
 
-    public String getFilename() {
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
+    }
+
+    public String getWhatDisappoints() {
+        return whatDisappoints;
+    }
+
+    public void setWhatDisappoints(String whatDisappoints) {
+        this.whatDisappoints = whatDisappoints;
+    }
+
+/*    public String getFilename() {
         return filename;
     }
 
@@ -18,7 +45,7 @@ public class User extends RealmObject {
         this.filename = filename;
     }
 
-    private String filename;
+    private String filename;*/
 
     public String getUsername() {
         return username;

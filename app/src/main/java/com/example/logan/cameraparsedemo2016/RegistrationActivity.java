@@ -41,6 +41,12 @@ public class RegistrationActivity extends AppCompatActivity {
         //get password
         EditText pw = (EditText) findViewById(R.id.password);
         String newPassword = pw.getText().toString();
+        //get about me
+        EditText am = (EditText) findViewById(R.id.aboutMeText);
+        String newAbout = am.getText().toString();
+        //get disappointsMost
+        EditText dm = (EditText) findViewById(R.id.disappointMostText);
+        String newDisappointMost = dm.getText().toString();
 
         //fix this query
         RealmQuery<User> query = realm.where(User.class);
@@ -53,15 +59,17 @@ public class RegistrationActivity extends AppCompatActivity {
             toast.show();
         }
         else if (!newUsername.isEmpty() && !email.isEmpty() && !newPassword
-                .isEmpty())
+                .isEmpty() &&!newAbout.isEmpty() && !newDisappointMost.isEmpty())
         {
             realm.beginTransaction();
             User user = new User();
             user.setUsername(newUsername);
             user.setPassword(newPassword);
+            user.setAboutMe(newAbout);
+            user.setWhatDisappoints(newDisappointMost);
             if (outputFile != null)
             {
-                user.setFilename(outputFile.getAbsolutePath());
+                user.setProfile(outputFile.getAbsolutePath());
             }
             realm.copyToRealm(user);
             realm.commitTransaction();
