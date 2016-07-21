@@ -4,58 +4,66 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 import java.util.UUID;
 
-import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
-import io.realm.Sort;
 
-public class ListActivity extends AppCompatActivity {
+public class DisappointmentView extends AppCompatActivity {
 
-    private RealmDisappointmentAdapter adapter;
-    private OrderedRealmCollection<Disappointment> disappointments;
     Realm realm = Realm.getDefaultInstance();
+    Disappointment disappointmentToEdit;
+    Intent intent = getIntent();
+    private RealmDisappointmentAdapter adapter;
+    SharedPreferences prefs = getSharedPreferences("disappointment", MODE_PRIVATE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
-        setTitle("Wall of Shame");
+        setContentView(R.layout.activity_disappointment_view);
 
-        ListView lv = (ListView) findViewById(R.id.listView);
-        adapter = new RealmDisappointmentAdapter(this, realm.where(Disappointment.class).findAll());
-        lv.setAdapter(adapter);
+        TextView tv = (TextView) findViewById(R.id.titleText);
+        tv.setText(prefs.getString("title", ""));
+
+        tv = (TextView) findViewById(R.id.userText);
+        User results1 = realm.where(User.class)
+                .equalTo("id", prefs.getString("user", ""))
+                .findFirst();
+        tv.setText(results1.getUsername());
+
+        tv = (TextView) findViewById(R.id.captionText);
+        tv.setText(prefs.getString("caption", ""));
+
+//        tv = (TextView) findViewById(R.id.locationText);
+//        tv.setText(intent.getStringExtra("location"));
+//
+//        tv = (TextView) findViewById(R.id.dateText);
+//        tv.setText(intent.getStringExtra("month")+"/"+intent.getStringExtra("date")+"/"+intent.getStringExtra("year"));
+
+        if (!(prefs.getString("filename", "").equals("")))
+        {
+            ImageView iv = (ImageView) findViewById(R.id.disappointmentImage);
+            File disappointmentImage = new File(prefs.getString("filename", ""));
+            Picasso.with(this).load(disappointmentImage).fit().into(iv);
+        }
     }
-
-    public void addDisappointment(View v)
-    {
-        SharedPreferences prefs = getSharedPreferences("remember_me", MODE_PRIVATE);
-        Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.FormActivity.class);
-        intent.putExtra("forEdit", false);
-        intent.putExtra("user", prefs.getString("userId", null));
-        startActivityForResult(intent, 1);
-    }
-
-    Disappointment disappointmentToEdit;
 
     public void editDisappointment(View v)
     {
-        disappointmentToEdit = (Disappointment) v.getTag();
+        disappointmentToEdit = realm.where(Disappointment.class)
+                .equalTo("id", prefs.getString("id", ""))
+                .findFirst();
         Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.FormActivity.class);
         intent.putExtra("forEdit", true);
         intent.putExtra("title", disappointmentToEdit.getTitle());
@@ -73,7 +81,9 @@ public class ListActivity extends AppCompatActivity {
 
     public void deleteDisappointment(View v)
     {
-        final Disappointment d = (Disappointment) v.getTag();
+        final Disappointment d = realm.where(Disappointment.class)
+                .equalTo("id", prefs.getString("id", ""))
+                .findFirst();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to delete this item?")
                 .setCancelable(false)
@@ -88,6 +98,8 @@ public class ListActivity extends AppCompatActivity {
                         realm.commitTransaction();
                         adapter.notifyDataSetChanged();
                         dialog.dismiss();
+                        Intent intent = new Intent(getApplicationContext(), com.example.logan.cameraparsedemo2016.ListActivity.class);
+                        startActivity(intent);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -99,63 +111,11 @@ public class ListActivity extends AppCompatActivity {
         alert.show();
     }
 
-    public void viewUsers(View v)
-    {
-        Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.UserList.class);
-        startActivity(intent);
-    }
-
-    public void viewDisappointment(View v)
-    {
-        Disappointment d = (Disappointment) v.getTag();
-
-        SharedPreferences prefs = getSharedPreferences("disappointment", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("title", d.getTitle());
-        editor.putString("user", d.getUser());
-//        editor.putString("location", d.getLocation());
-//        editor.putInt("year", d.getYear());
-//        editor.putInt("month", d.getMonth());
-//        editor.putInt("date", d.getDate());
-        if (d.getFilename() != null)
-        {
-            editor.putString("filename", d.getFilename());
-        }
-        else
-        {
-            editor.putString("filename", "");
-        }
-        editor.putString("id", d.getId());
-        editor.commit();
-
-        Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.DisappointmentView.class);
-        startActivity(intent);
-    }
-
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         if (data != null)
         {
-            if(resultCode == 1) {
-                RealmQuery<User> query = realm.where(User.class);
-                User currentUser = query.findFirst();
-                Disappointment d = new Disappointment();
-                d.setTitle(data.getStringExtra("title"));
-                d.setUser(data.getStringExtra("user"));
-                d.setYear(data.getIntExtra("year", 0));
-                d.setMonth(data.getIntExtra("month", 0));
-                d.setDate(data.getIntExtra("date", 0));
-                d.setCaption(data.getStringExtra("caption"));
-                d.setId(UUID.randomUUID().toString());
-                if (data.getStringExtra("photoPath") != null) {
-                    d.setFilename(data.getStringExtra("photoPath"));
-                }
-                realm.beginTransaction();
-                realm.copyToRealm(d);
-                realm.commitTransaction();
-                adapter.notifyDataSetChanged();
-            }
-            else if (resultCode == 2)
+            if (resultCode == 2)
             {
                 realm.beginTransaction();
                 disappointmentToEdit.setTitle(data.getStringExtra("title"));

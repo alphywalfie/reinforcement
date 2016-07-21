@@ -63,4 +63,13 @@
         android:layout_below="@+id/userText"
         android:layout_toEndOf="@+id/editButton"
         android:onClick="deleteDisappointment"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View"
+        android:id="@+id/viewButton"
+        android:layout_alignTop="@+id/deleteButton"
+        android:layout_toEndOf="@+id/deleteButton"
+        android:onClick="viewDisappointment"/>
 </RelativeLayout>
