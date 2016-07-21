@@ -2,11 +2,15 @@ package com.example.logan.cameraparsedemo2016;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -23,14 +27,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     private GoogleMap mMap;
     @Override
@@ -51,6 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
         // default to normal view
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mMap.setOnMapClickListener(this);
     }
 
 // GoogleClient management
@@ -65,6 +72,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .addOnConnectionFailedListener(listener)
                 .addApi(LocationServices.API)
                 .build();
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        Location location = new Location("Etc");
+        location.setLatitude(latLng.latitude);
+        location.setLongitude(latLng.longitude);
+        updateMyPosition(location);
     }
 
     class MyGoogleClientListener implements GoogleApiClient.ConnectionCallbacks, OnConnectionFailedListener {
@@ -86,8 +101,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             // REQUESTING FOR UPDATES
             LocationRequest mLocationRequest = new LocationRequest();
-            mLocationRequest.setInterval(10000);
-            mLocationRequest.setFastestInterval(5000);
+            /*mLocationRequest.setInterval(10000);
+            mLocationRequest.setFastestInterval(5000);*/
             mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
 
@@ -185,7 +200,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-
     private void addNewMarker(final LatLng pos)
     {
         final Date date =  new Date();
@@ -210,6 +224,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+    }
+
+    public void searchLocation(View v)
+    {
+        EditText search = (EditText) findViewById(R.id.locationSearch);
+        String location = search.getText().toString();
+        List<Address> addressList = null;
+        if(location != null || !location.equals("")) {
+            Geocoder geocoder = new Geocoder(this);
+            try {
+                addressList = geocoder.getFromLocationName(location, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if(addressList != null || addressList.size() != 0) {
+                Address address = addressList.get(0);
+                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            }
+            else
+            {
+                Toast toast = Toast.makeText(this, "No such location found", Toast.LENGTH_SHORT);
+            }
+        }
     }
 
     public void setUserLocation(View v)
