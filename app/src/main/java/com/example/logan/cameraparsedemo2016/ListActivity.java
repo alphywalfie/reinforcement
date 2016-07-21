@@ -50,7 +50,6 @@ public class ListActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("remember_me", MODE_PRIVATE);
         Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.FormActivity.class);
         intent.putExtra("forEdit", false);
-        intent.putExtra("user", prefs.getString("userId", null));
         startActivityForResult(intent, 1);
     }
 
@@ -112,6 +111,33 @@ public class ListActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.UserList.class);
         startActivity(intent);
+    }
+
+    public void viewDisappointment(View v)
+    {
+        Disappointment d = (Disappointment) v.getTag();
+
+        if (d != null)
+        {
+            Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.DisappointmentView.class);
+            intent.putExtra("title", d.getTitle());
+            intent.putExtra("user", d.getUser());
+            intent.putExtra("caption", d.getCaption());
+//        intent.putExtra("location", d.getLocation());
+//        intent.putExtra("year", d.getYear());
+//        intent.putExtra("month", d.getMonth());
+//        intent.putExtra("date", d.getDate());
+            if (d.getFilename() != null)
+            {
+                intent.putExtra("filename", d.getFilename());
+            }
+            else
+            {
+                intent.putExtra("filename", "");
+            }
+            intent.putExtra("id", d.getId());
+            startActivity(intent);
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data)

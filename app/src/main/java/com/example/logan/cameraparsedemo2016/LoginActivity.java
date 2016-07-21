@@ -77,11 +77,11 @@ public class LoginActivity extends AppCompatActivity {
             currEdit.putString("currentUser", loginUsername);
             if (checky)
             {
-                editor.putString("username",loginUsername);
+
                 editor.putString("password",loginPassword);
                 editor.putBoolean("remember", checky);
             }
-            editor.putString("userId", result1.getId());
+            editor.putString("username",loginUsername);
             editor.commit();
             Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.ListActivity.class);
             startActivity(intent);

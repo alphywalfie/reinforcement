@@ -68,7 +68,6 @@ public class RegistrationActivity extends AppCompatActivity {
             user.setPassword(newPassword);
             user.setAboutMe(newAbout);
             user.setWhatDisappoints(newDisappointMost);
-            user.setId(UUID.randomUUID().toString());
             if (outputFile != null)
             {
                 user.setProfile(outputFile.getAbsolutePath());

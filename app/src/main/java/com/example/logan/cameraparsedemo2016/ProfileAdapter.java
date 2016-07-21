@@ -64,7 +64,7 @@ public class ProfileAdapter extends RealmBaseAdapter<Disappointment> implements 
             Disappointment d = adapterData.get(position);
             name.setText(d.getTitle());
             User results1 = realm.where(User.class)
-                    .equalTo("id", d.getUser())
+                    .equalTo("username", d.getUser())
                     .findFirst();
             user.setText(results1.getUsername());
             if (d.getFilename() != null)
@@ -76,10 +76,9 @@ public class ProfileAdapter extends RealmBaseAdapter<Disappointment> implements 
             Button eb = (Button) v.findViewById(R.id.editButton);
             db.setTag(d);
             eb.setTag(d);
-            String currentUser = prefs.getString("userId", "");
             db.setTag(d);
             eb.setTag(d);
-            if (!d.getUser().equals(currentUser))
+            if (!d.getUser().equals(prefs.getString("username", "")))
             {
                 db.setVisibility(View.INVISIBLE);
                 eb.setVisibility(View.INVISIBLE);

@@ -22,10 +22,14 @@ public class Disappointment extends RealmObject {
     private int year;
     private int month;
     private int date;
+<<<<<<< HEAD
+    private int likes;
+=======
     private RealmList<Shame> shames;
 
     public Disappointment() {
     }
+>>>>>>> origin/master
 
     public String getId() {
         return id;

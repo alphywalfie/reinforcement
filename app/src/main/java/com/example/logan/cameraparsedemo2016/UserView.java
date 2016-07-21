@@ -52,7 +52,7 @@ public class UserView extends AppCompatActivity {
         userToQuery.equalTo("username", user);
         User result1 = userToQuery.findFirst();
         RealmQuery<Disappointment> query = realm.where(Disappointment.class);
-        query.equalTo("user", result1.getId());
+        query.equalTo("user", result1.getUsername());
         RealmResults<Disappointment> userDisappointments = query.findAll();
         adapter = new ProfileAdapter(this, userDisappointments);
         lv.setAdapter(adapter);

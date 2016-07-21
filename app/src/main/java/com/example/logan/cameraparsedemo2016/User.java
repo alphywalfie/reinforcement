@@ -14,16 +14,6 @@ public class User extends RealmObject {
     private String aboutMe;
     private String whatDisappoints;
 
-    private String id;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getProfile() {
         return profile;
     }
