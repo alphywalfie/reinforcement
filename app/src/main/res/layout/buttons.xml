@@ -6,16 +6,24 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Review"
-        android:id="@+id/addReview"
+        android:text="Add Disappointment"
+        android:id="@+id/addDisappointment"
         android:layout_gravity="center_horizontal"
-        android:onClick="addReview"/>
+        android:onClick="addDisappointment"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Clear All"
-        android:id="@+id/button"
+        android:text="All Users"
+        android:id="@+id/allUsers"
         android:layout_gravity="center_horizontal"
-        android:onClick="deleteAllReviews"/>
+        android:onClick="viewUsers"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hall of Shame"
+        android:id="@+id/hallOfShame"
+        android:layout_gravity="center_horizontal"
+        android:onClick="viewHall"/>
 </LinearLayout>

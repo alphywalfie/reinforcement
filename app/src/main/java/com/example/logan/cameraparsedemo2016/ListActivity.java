@@ -3,6 +3,7 @@ package com.example.logan.cameraparsedemo2016;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,101 +27,65 @@ import io.realm.Sort;
 
 public class ListActivity extends AppCompatActivity {
 
-    //private ArrayList<Review> reviews = new ArrayList<>();
-    //private ReviewAdapter adapter;
-    private RealmReviewAdapter2 adapter;
-    private OrderedRealmCollection<Review> reviews;
+    private RealmDisappointmentAdapter adapter;
+    private OrderedRealmCollection<Disappointment> disappointments;
     Realm realm = Realm.getDefaultInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        setTitle("Food Reviews");
-
-        /*Review r = new Review();
-        r.setFoodName("Potato");
-        r.setFoodPrice(12);
-        r.setFoodDescription("Good");
-        r.setFoodComment("Yay");
-        r.setFoodRating(5);
-
-        reviews.add(r);*/
+        setTitle("Wall of Shame");
 
         ListView lv = (ListView) findViewById(R.id.listView);
-        //adapter = new ReviewAdapter (this, reviews);
-        adapter = new RealmReviewAdapter2(this, realm.where(Review.class).findAll());
+        adapter = new RealmDisappointmentAdapter(this, realm.where(Disappointment.class).findAll());
         lv.setAdapter(adapter);
     }
 
-    public void addReview(View v)
+    public void addDisappointment(View v)
     {
+        SharedPreferences prefs = getSharedPreferences("remember_me", MODE_PRIVATE);
         Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.FormActivity.class);
         intent.putExtra("forEdit", false);
+        intent.putExtra("user", prefs.getString("userId", null));
         startActivityForResult(intent, 1);
     }
 
-    Review reviewToEdit;
+    Disappointment disappointmentToEdit;
 
-    public void editReview(View v)
+    public void editDisappointment(View v)
     {
-        reviewToEdit = (Review) v.getTag();
+        disappointmentToEdit = (Disappointment) v.getTag();
         Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.FormActivity.class);
         intent.putExtra("forEdit", true);
-        intent.putExtra("name", reviewToEdit.getFoodName());
-        intent.putExtra("price", reviewToEdit.getFoodPrice());
-        intent.putExtra("comment", reviewToEdit.getFoodComment());
-        intent.putExtra("description", reviewToEdit.getFoodDescription());
-        intent.putExtra("rating", reviewToEdit.getFoodRating());
+        intent.putExtra("title", disappointmentToEdit.getTitle());
+        intent.putExtra("caption", disappointmentToEdit.getCaption());
+        intent.putExtra("year", disappointmentToEdit.getYear());
+        intent.putExtra("month", disappointmentToEdit.getMonth());
+        intent.putExtra("date", disappointmentToEdit.getDate());
         intent.putExtra("photo","");
-        if (reviewToEdit.getFoodPhoto() != null)
+        if (disappointmentToEdit.getFilename() != null)
         {
-            intent.putExtra("photo", reviewToEdit.getFoodPhoto());
+            intent.putExtra("photo", disappointmentToEdit.getFilename());
         }
         startActivityForResult(intent, 1);
     }
 
-    public void deleteReview(View v)
+    public void deleteDisappointment(View v)
     {
-        realm.beginTransaction();
-        final Review r = (Review) v.getTag();
+        final Disappointment d = (Disappointment) v.getTag();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to delete this item?")
                 .setCancelable(false)
                 .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id){
-                        String reviewId = r.getId();
-                        RealmQuery<Review> query = realm.where(Review.class);
-                        query.equalTo("id", reviewToEdit.getId());
-                        RealmResults<Review> result1 = query.findAll();
-                        result1.deleteFirstFromRealm();
+                        realm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                d.deleteFromRealm();
+                            }
+                        });
                         realm.commitTransaction();
-                        //reviews.remove(r);
-                        adapter.notifyDataSetChanged();
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
-
-    public void deleteAllReviews(View v)
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("WARNING: Delete all reviews?")
-                .setCancelable(false)
-                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id){
-                        realm.beginTransaction();
-                        RealmResults<Review> result1 = realm.where(Review.class).findAll();
-                        result1.deleteAllFromRealm();
-                        realm.commitTransaction();
-                        //reviews.clear();
                         adapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
@@ -139,37 +104,36 @@ public class ListActivity extends AppCompatActivity {
         if (data != null)
         {
             if(resultCode == 1) {
-                Review r = new Review();
-                r.setFoodName(data.getStringExtra("name"));
-                r.setFoodPrice(data.getFloatExtra("price", 0));
-                r.setFoodDescription(data.getStringExtra("description"));
-                r.setFoodComment(data.getStringExtra("comment"));
-                r.setFoodRating(data.getFloatExtra("rating", 0));
-                r.setId(UUID.randomUUID().toString());
+                Disappointment d = new Disappointment();
+                d.setTitle(data.getStringExtra("title"));
+                d.setUser(data.getStringExtra("user"));
+                d.setYear(data.getIntExtra("year", 0));
+                d.setMonth(data.getIntExtra("month", 0));
+                d.setDate(data.getIntExtra("date", 0));
+                d.setCaption(data.getStringExtra("caption"));
+                d.setId(UUID.randomUUID().toString());
                 if (data.getStringExtra("photoPath") != null) {
-                    r.setFoodPhoto(data.getStringExtra("photoPath"));
+                    d.setFilename(data.getStringExtra("photoPath"));
                 }
-                Realm realm = Realm.getDefaultInstance();
                 realm.beginTransaction();
-                realm.copyToRealm(r);
+                realm.copyToRealm(d);
                 realm.commitTransaction();
                 adapter.notifyDataSetChanged();
             }
             else if (resultCode == 2)
             {
                 realm.beginTransaction();
-                reviewToEdit.setFoodName(data.getStringExtra("name"));
-                reviewToEdit.setFoodPrice(data.getFloatExtra("price", 0));
-                reviewToEdit.setFoodDescription(data.getStringExtra("description"));
-                reviewToEdit.setFoodComment(data.getStringExtra("comment"));
-                reviewToEdit.setFoodRating(data.getFloatExtra("rating", 0));
+                disappointmentToEdit.setTitle(data.getStringExtra("title"));
+                disappointmentToEdit.setCaption(data.getStringExtra("caption"));
+                disappointmentToEdit.setYear(data.getIntExtra("year", 0));
+                disappointmentToEdit.setMonth(data.getIntExtra("month", 0));
+                disappointmentToEdit.setDate(data.getIntExtra("date", 0));
                 if (data.getStringExtra("photoPath") != null) {
-                    reviewToEdit.setFoodPhoto(data.getStringExtra("photoPath"));
+                    disappointmentToEdit.setFilename(data.getStringExtra("photoPath"));
                 }
-                Realm realm = Realm.getDefaultInstance();
-                RealmQuery<Review> query = realm.where(Review.class);
-                query.equalTo("id", reviewToEdit.getId());
-                RealmResults<Review> result1 = query.findAll();
+                RealmQuery<Disappointment> query = realm.where(Disappointment.class);
+                query.equalTo("id", disappointmentToEdit.getId());
+                RealmResults<Disappointment> result1 = query.findAll();
                 realm.copyToRealmOrUpdate(result1);
                 realm.commitTransaction();
                 adapter.notifyDataSetChanged();
