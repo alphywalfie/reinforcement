@@ -67,7 +67,7 @@ public class DisappointmentView extends AppCompatActivity implements OnMapReadyC
         }
 
         tv = (TextView) findViewById(R.id.unlikeText);
-        tv.setText(intent2.getIntExtra("number", 0)+"people have shamed this");
+        tv.setText("This has been shamed " + intent2.getIntExtra("number", 0)+" times");
 
         latitude = intent2.getDoubleExtra("latitude", 0);
         longitude = intent2.getDoubleExtra("longitude", 0);
