@@ -53,28 +53,17 @@ public class RealmHallOfShameAdapter extends RealmBaseAdapter<Disappointment> im
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        int count;
-        if (adapterData.size() > 5)
-        {
-            count = 5;
-        }
-        else
-        {
-            count = adapterData.size();
-        }
-        if (position<count) {
+        if (position<adapterData.size()) {
             View v = inflater.inflate(R.layout.shame_row, null);
 
             TextView name = (TextView) v.findViewById(R.id.titleText);
             TextView user = (TextView) v.findViewById(R.id.userText);
-            TextView number = (TextView) v.findViewById(R.id.numberText);
-            ImageView imageView = (ImageView) v.findViewById(R.id.userProfilePhoto);
+            ImageView imageView = (ImageView) v.findViewById(R.id.disappointmentImage);
 
-            number.setText(position);
             Disappointment d = adapterData.get(position);
             name.setText(d.getTitle());
             User results1 = realm.where(User.class)
-                    .equalTo("id", d.getUser())
+                    .equalTo("username", d.getUser())
                     .findFirst();
             user.setText(results1.getUsername());
             if (d.getFilename() != null)
@@ -82,12 +71,12 @@ public class RealmHallOfShameAdapter extends RealmBaseAdapter<Disappointment> im
                 disappointmentImage = new File(d.getFilename());
                 Picasso.with(context).load(disappointmentImage).fit().into(imageView);
             }
-            imageView.setTag(d);
+          imageView.setTag(d);
             return v;
         }
         else
         {
-            View v = inflater.inflate(R.layout.buttons, null);
+            View v = inflater.inflate(R.layout.shame_buttons, null);
             return v;
         }
     }

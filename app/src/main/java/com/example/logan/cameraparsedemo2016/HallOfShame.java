@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
@@ -29,6 +30,21 @@ public class HallOfShame extends AppCompatActivity {
 
         RealmResults<Disappointment> result = realm.where(Disappointment.class).findAll();
         result = result.sort("likes", Sort.DESCENDING);
+
+        RealmList<Disappointment> result2 = new RealmList<Disappointment>();
+        if (result.size() > 5)
+        {
+            for (int i = 5; i < result.size(); i++)
+            {
+                final Disappointment d = result.get(i);
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        d.deleteFromRealm();
+                    }
+                });
+            }
+        }
 
         ListView lv = (ListView) findViewById(R.id.listView3);
         adapter = new RealmHallOfShameAdapter(this, result);
