@@ -34,7 +34,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.Date;
 
-public class FormActivity extends AppCompatActivity {
+public class FormActivity extends FragmentActivity implements OnMapReadyCallback {
 
     Boolean forEdit;
     String user;
@@ -44,6 +44,10 @@ public class FormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
         setTitle("Add Disappointment");
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment);
+        mapFragment.getMapAsync(this);
 
         Intent intent = getIntent();
         forEdit = intent.getBooleanExtra("forEdit", false);
@@ -156,8 +160,13 @@ public class FormActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             processPicture();
         }
+        if (resultCode == 1){
+            Bundle bundle = data.getParcelableExtra("bundle");
+            LatLng userPosition = bundle.getParcelable("userPosition");
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition, 15));
+            addNewMarker(userPosition);
+        }
     }
-    //--------------------------------------------------------CAMERA METHODS----------------------------------------------------------------------
 
     class PictureProcessThread implements Runnable {
         @Override
@@ -207,5 +216,41 @@ public class FormActivity extends AppCompatActivity {
         ImageView imageView = (ImageView) findViewById(R.id.formPic);
         Picasso.with(this).load(outputFile).fit().into(imageView);
         newPhotoTaken = true;
+    }
+    //-----------------------------------------------------------MAP METHODS----------------------------------------------------------------------
+
+    private GoogleMap mMap;
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        mMap = googleMap;
+        // default to normal view
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+    }
+    private void addNewMarker(final LatLng pos)
+    {
+        final Date date =  new Date();
+        final String comment = date.toString();
+
+        // NOTE: in order to update the UI an operation must occur in the UI
+        // thread, this will force the action to occur in the UI thread
+        runOnUiThread(new Runnable()
+        {
+            public void run()
+            {
+                // Use is diff icon to indicate if the data is sent or not
+                MarkerOptions markerOptions = new MarkerOptions()
+                        .position(pos);
+
+                markerOptions.title(comment);
+
+                // based on local profile
+                //markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.green_pin));
+
+                Marker marker = mMap.addMarker(markerOptions);
+            }
+        });
+
     }
 }
