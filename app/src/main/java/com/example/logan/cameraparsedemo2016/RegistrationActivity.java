@@ -14,9 +14,10 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.UUID;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
+import io.realm.RealmList;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
@@ -52,7 +53,7 @@ public class RegistrationActivity extends AppCompatActivity {
         RealmQuery<User> query = realm.where(User.class);
         query.equalTo("username", newUsername);
         RealmResults<User> result1 = query.findAll();
-
+        RealmList<Disappointment> userDisappointments = new RealmList<Disappointment>();
         if(!result1.isEmpty())
         {
             Toast toast = Toast.makeText(this, "This user already exists", Toast.LENGTH_SHORT);
@@ -67,6 +68,7 @@ public class RegistrationActivity extends AppCompatActivity {
             user.setPassword(newPassword);
             user.setAboutMe(newAbout);
             user.setWhatDisappoints(newDisappointMost);
+            user.setId(UUID.randomUUID().toString());
             if (outputFile != null)
             {
                 user.setProfile(outputFile.getAbsolutePath());

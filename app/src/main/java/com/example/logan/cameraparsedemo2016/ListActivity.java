@@ -110,6 +110,8 @@ public class ListActivity extends AppCompatActivity {
         if (data != null)
         {
             if(resultCode == 1) {
+                RealmQuery<User> query = realm.where(User.class);
+                User currentUser = query.findFirst();
                 Disappointment d = new Disappointment();
                 d.setTitle(data.getStringExtra("title"));
                 d.setUser(data.getStringExtra("user"));

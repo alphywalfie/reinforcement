@@ -1,5 +1,6 @@
 package com.example.logan.cameraparsedemo2016;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
 /**
@@ -12,6 +13,16 @@ public class User extends RealmObject {
     private String profile;
     private String aboutMe;
     private String whatDisappoints;
+
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getProfile() {
         return profile;
@@ -36,16 +47,6 @@ public class User extends RealmObject {
     public void setWhatDisappoints(String whatDisappoints) {
         this.whatDisappoints = whatDisappoints;
     }
-
-/*    public String getFilename() {
-        return filename;
-    }
-
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
-
-    private String filename;*/
 
     public String getUsername() {
         return username;

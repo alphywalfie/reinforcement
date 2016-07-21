@@ -71,14 +71,17 @@ public class LoginActivity extends AppCompatActivity {
         if(!(result1 == null))
         {
             SharedPreferences prefs = getSharedPreferences("remember_me", MODE_PRIVATE);
+            SharedPreferences curr = getSharedPreferences("current_user", MODE_PRIVATE);
+            SharedPreferences.Editor currEdit = curr.edit();
             SharedPreferences.Editor editor = prefs.edit();
+            currEdit.putString("currentUser", loginUsername);
             if (checky)
             {
                 editor.putString("username",loginUsername);
                 editor.putString("password",loginPassword);
                 editor.putBoolean("remember", checky);
             }
-            //editor.putString("userId", result1.getId());
+            editor.putString("userId", result1.getId());
             editor.commit();
             Intent intent = new Intent(this, com.example.logan.cameraparsedemo2016.ListActivity.class);
             startActivity(intent);
