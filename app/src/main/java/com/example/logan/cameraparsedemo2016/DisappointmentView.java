@@ -36,11 +36,8 @@ public class DisappointmentView extends AppCompatActivity {
         TextView tv = (TextView) findViewById(R.id.titleText2);
         tv.setText(intent2.getStringExtra("title"));
 
-//        tv = (TextView) findViewById(R.id.userText);
-//        User results1 = realm.where(User.class)
-//                .equalTo("id", intent2.getStringExtra("user"))
-//                .findFirst();
-//        tv.setText(results1.getUsername());
+        tv = (TextView) findViewById(R.id.userText);
+        tv.setText(intent2.getStringExtra("user"));
 
         tv = (TextView) findViewById(R.id.captionText);
         tv.setText(intent2.getStringExtra("caption"));

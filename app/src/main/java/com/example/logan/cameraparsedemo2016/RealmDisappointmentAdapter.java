@@ -74,7 +74,7 @@ public class RealmDisappointmentAdapter extends RealmBaseAdapter<Disappointment>
             Button vb = (Button) v.findViewById(R.id.viewButton);
             db.setTag(d);
             eb.setTag(d);
-            vb.setTag(d);
+            imageView.setTag(d);
             if (!d.getUser().equals(prefs.getString("username","")))
             {
                 db.setVisibility(View.INVISIBLE);

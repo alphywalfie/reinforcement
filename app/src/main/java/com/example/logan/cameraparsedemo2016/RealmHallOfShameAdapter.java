@@ -53,7 +53,16 @@ public class RealmHallOfShameAdapter extends RealmBaseAdapter<Disappointment> im
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (position<adapterData.size()) {
+        int count;
+        if (adapterData.size() > 5)
+        {
+            count = 5;
+        }
+        else
+        {
+            count = adapterData.size();
+        }
+        if (position<count) {
             View v = inflater.inflate(R.layout.shame_row, null);
 
             TextView name = (TextView) v.findViewById(R.id.titleText);
@@ -75,7 +84,7 @@ public class RealmHallOfShameAdapter extends RealmBaseAdapter<Disappointment> im
             }
             Button vb = (Button) v.findViewById(R.id.viewButton);
             String currentUser = prefs.getString("userId", "");
-            vb.setTag(d);
+            imageView.setTag(d);
             return v;
         }
         else
