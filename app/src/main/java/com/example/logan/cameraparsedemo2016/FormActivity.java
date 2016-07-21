@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -68,6 +69,7 @@ public class FormActivity extends FragmentActivity implements OnMapReadyCallback
             longitude = intent.getDoubleExtra("longitude", 0);
             locationPresent = intent.getBooleanExtra("locationPresent", false);
             EditText et = (EditText) findViewById(R.id.titleText);
+            DatePicker datePick = (DatePicker) findViewById(R.id.datePicker);
             et.setText(title);
             et = (EditText) findViewById(R.id.captionText);
             et.setText(caption);
@@ -92,11 +94,19 @@ public class FormActivity extends FragmentActivity implements OnMapReadyCallback
         String caption;
         String temp;
         String temp2;
+        int year;
+        int month;
+        int day;
 
         EditText et = (EditText) findViewById(R.id.titleText);
         title = et.getText().toString();
         et = (EditText) findViewById(R.id.captionText);
         caption = et.getText().toString();
+
+        DatePicker datePick = (DatePicker) findViewById(R.id.datePicker);
+        year = datePick.getYear();
+        month = datePick.getMonth() + 1;
+        day = datePick.getDayOfMonth();
 
         if (title.isEmpty() || caption.isEmpty()) {
             Toast toast = Toast.makeText(this, "Make sure no field is blank", Toast.LENGTH_SHORT);
@@ -106,6 +116,9 @@ public class FormActivity extends FragmentActivity implements OnMapReadyCallback
             disappointmentIntent.putExtra("title", title);
             disappointmentIntent.putExtra("caption", caption);
             disappointmentIntent.putExtra("user", user);
+            disappointmentIntent.putExtra("year", year);
+            disappointmentIntent.putExtra("month", month);
+            disappointmentIntent.putExtra("date", day);
             if (newPhotoTaken) {
                 disappointmentIntent.putExtra("photoPath", outputFile.getAbsolutePath());
             }

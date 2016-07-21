@@ -94,9 +94,27 @@
         android:layout_height="wrap_content"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:id="@+id/fragment2"
-        android:layout_below="@+id/textView6"
-        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/unlikeImage"
+        android:layout_below="@+id/textView6"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/dateText"
+        android:layout_alignBaseline="@+id/captionText"
+        android:layout_alignBottom="@+id/captionText"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Posted on:"
+        android:id="@+id/textView13"
+        android:layout_alignBottom="@+id/textView5"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

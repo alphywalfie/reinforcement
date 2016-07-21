@@ -18,7 +18,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="300dp"
         android:layout_gravity="center_horizontal" />``
 
     <ImageView
@@ -82,6 +82,14 @@
         android:id="@+id/button7"
         android:layout_gravity="center_horizontal"
         android:onClick="goToMap"/>
+
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/datePicker"
+        android:layout_gravity="center_horizontal"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"/>
 
     <Button
         android:layout_width="wrap_content"

@@ -11,9 +11,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.UUID;
 
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -132,9 +134,9 @@ public class UserView extends AppCompatActivity {
                 intent.putExtra("latitude", d.getLatitude());
                 intent.putExtra("locationPresent", true);
             }
-//        intent.putExtra("year", d.getYear());
-//        intent.putExtra("month", d.getMonth());
-//        intent.putExtra("date", d.getDate());
+            intent.putExtra("year", d.getYear());
+            intent.putExtra("month", d.getMonth());
+            intent.putExtra("date", d.getDate());
             if (d.getFilename() != null)
             {
                 intent.putExtra("filename", d.getFilename());
@@ -146,6 +148,40 @@ public class UserView extends AppCompatActivity {
             intent.putExtra("id", d.getId());
             intent.putExtra("number", d.getLikes());
             startActivity(intent);
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (data != null)
+        {
+            if (resultCode == 2)
+            {
+                realm.beginTransaction();
+                disappointmentToEdit.setTitle(data.getStringExtra("title"));
+                disappointmentToEdit.setCaption(data.getStringExtra("caption"));
+                disappointmentToEdit.setYear(data.getIntExtra("year", 0));
+                disappointmentToEdit.setMonth(data.getIntExtra("month", 0));
+                disappointmentToEdit.setDate(data.getIntExtra("date", 0));
+                if (data.getStringExtra("photoPath") != null) {
+                    disappointmentToEdit.setFilename(data.getStringExtra("photoPath"));
+                }
+                Bundle bundle = data.getParcelableExtra("bundle");
+                if (bundle != null)
+                {
+                    LatLng userPosition = bundle.getParcelable("userPosition");
+                    Double userPositionLat = userPosition.latitude;
+                    Double userPositionLong = userPosition.longitude;
+                    disappointmentToEdit.setLatitude(userPositionLat);
+                    disappointmentToEdit.setLongitude(userPositionLong);
+                }
+                RealmQuery<Disappointment> query = realm.where(Disappointment.class);
+                query.equalTo("id", disappointmentToEdit.getId());
+                RealmResults<Disappointment> result1 = query.findAll();
+                realm.copyToRealmOrUpdate(result1);
+                realm.commitTransaction();
+                adapter.notifyDataSetChanged();
+            }
         }
     }
 }

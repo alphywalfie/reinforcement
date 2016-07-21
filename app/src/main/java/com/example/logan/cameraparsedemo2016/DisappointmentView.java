@@ -53,6 +53,12 @@ public class DisappointmentView extends AppCompatActivity implements OnMapReadyC
         tv = (TextView) findViewById(R.id.captionText);
         tv.setText(intent2.getStringExtra("caption"));
 
+        tv = (TextView) findViewById(R.id.dateText);
+        int year = intent2.getIntExtra("year", 0);
+        int month = intent2.getIntExtra("month",0);
+        int day = intent2.getIntExtra("date", 0);
+        tv.setText(month + "/" + day + "/" + year);
+
         //tv = (TextView) findViewById(R.id.locationText);
         //tv.setText(intent2.getFloatExtra("latitude", 0)+","+intent2.getFloatExtra("longitude", 0));
 //

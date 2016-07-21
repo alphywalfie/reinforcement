@@ -135,9 +135,9 @@ public class ListActivity extends AppCompatActivity {
                 intent.putExtra("latitude", d.getLatitude());
                 intent.putExtra("locationPresent", true);
             }
-//        intent.putExtra("year", d.getYear());
-//        intent.putExtra("month", d.getMonth());
-//        intent.putExtra("date", d.getDate());
+            intent.putExtra("year", d.getYear());
+            intent.putExtra("month", d.getMonth());
+            intent.putExtra("date", d.getDate());
             if (d.getFilename() != null)
             {
                 intent.putExtra("filename", d.getFilename());
