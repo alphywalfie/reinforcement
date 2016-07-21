@@ -93,7 +93,7 @@ public class ListActivity extends AppCompatActivity {
                                 d.deleteFromRealm();
                             }
                         });
-                        realm.commitTransaction();
+                        //realm.commitTransaction();
                         adapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
@@ -182,6 +182,15 @@ public class ListActivity extends AppCompatActivity {
                 disappointmentToEdit.setDate(data.getIntExtra("date", 0));
                 if (data.getStringExtra("photoPath") != null) {
                     disappointmentToEdit.setFilename(data.getStringExtra("photoPath"));
+                }
+                Bundle bundle = data.getParcelableExtra("bundle");
+                if (bundle != null)
+                {
+                    LatLng userPosition = bundle.getParcelable("userPosition");
+                    Double userPositionLat = userPosition.latitude;
+                    Double userPositionLong = userPosition.longitude;
+                    disappointmentToEdit.setLatitude(userPositionLat);
+                    disappointmentToEdit.setLongitude(userPositionLong);
                 }
                 RealmQuery<Disappointment> query = realm.where(Disappointment.class);
                 query.equalTo("id", disappointmentToEdit.getId());
