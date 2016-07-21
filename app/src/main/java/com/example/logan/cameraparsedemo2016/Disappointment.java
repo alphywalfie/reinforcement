@@ -5,6 +5,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.sql.Time;
 import java.util.Date;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
 /**
@@ -21,6 +22,10 @@ public class Disappointment extends RealmObject {
     private int year;
     private int month;
     private int date;
+    private RealmList<Shame> shames;
+
+    public Disappointment() {
+    }
 
     public String getId() {
         return id;
@@ -100,5 +105,13 @@ public class Disappointment extends RealmObject {
 
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
+    }
+
+    public RealmList<Shame> getShames() {
+        return shames;
+    }
+
+    public void setShames(RealmList<Shame> shames) {
+        this.shames = shames;
     }
 }
