@@ -95,7 +95,7 @@ public class DisappointmentView extends AppCompatActivity implements OnMapReadyC
         realm.commitTransaction();
 
         TextView tv = (TextView) findViewById(R.id.unlikeText);
-        tv.setText(d.getLikes()+"people have shamed this");
+        tv.setText("This has been shamed " + d.getLikes() +" times");
     }
 
     //-----------------------------------------------------------MAP METHODS----------------------------------------------------------------------
